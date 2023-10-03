@@ -2,8 +2,16 @@ package modulos.produtos;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import pojo.ComponentePojo;
+import pojo.ProdutoPojo;
+import pojo.UsuarioPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
@@ -11,33 +19,39 @@ import static org.hamcrest.Matchers.*;
 
 @DisplayName("Testes de API Rest do modulo de Produtos")
 public class ProdutoTest {
-    @Test
-    @DisplayName("Validar os limites proibidos do valor do produto")
-    public void testValidarLimitesProibidosValorProduto(){
+    private String token;
+
+    @BeforeEach
+    public void beforEach(){
         //Configurando os dados da API Rest da lojinha
         baseURI = "http://165.227.93.41";
         //port = 8080(nº da porta, caso seja necessário
         basePath = "/lojinha";
 
+        UsuarioPojo usuario = new UsuarioPojo();
+        usuario.setUsuarioLogin("admin");
+        usuario.setUsuarioSenha("admin");
+
         //Obter o token do usuario admin
-        String token = given()
+        this.token = given()
                 .contentType(ContentType.JSON)
-                .body("{\n" +
-                        "  \"usuarioLogin\": \"admin\",\n" +
-                        "  \"usuarioSenha\": \"admin\"\n" +
-                        "}")
+                .body(usuario)
             .when()
                 .post("/v2/login")
             .then()
                 .extract()
                     .path("data.token");
+    }
 
+    @Test
+    @DisplayName("Validar que o valor do produto igual a 0.00 não é permitido")
+    public void testValidarLimitesZeradosProibidosValorProduto(){
         //Tentar inserir produto com valor 0.00 e validar que a mensagem de erro foi apresentada
         // e ostatus code retornardo foi 422
 
         given()
                 .contentType(ContentType.JSON)
-                .header("token",token)
+                .header("token",this.token)
                 .body("{\n" +
                         "  \"produtoNome\": \"Play Staion 5\",\n" +
                         "  \"produtoValor\": 0.00,\n" +
@@ -55,6 +69,45 @@ public class ProdutoTest {
         .when()
                 .post("/v2/produtos")
         .then()
+                .assertThat()
+                    .body("error", equalTo("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00"))
+                    .statusCode(422);
+    }
+
+    @Test
+    @DisplayName("Validar que o valor do produto igual a 7000.01 não é permitido")
+    public void testValidarLimitesMaiorQueSeteProibidosValorProduto(){
+        //Tentar inserir produto com valor 0.00 e validar que a mensagem de erro foi apresentada
+        // e ostatus code retornardo foi 422
+
+        ProdutoPojo produto = new ProdutoPojo();
+        produto.setProdutoNome("Play Station 5");
+        produto.setProdutoValor(7000.01);
+
+        List<String> cores = new ArrayList<>();
+        cores.add("Preto");
+        cores.add("Branco");
+
+        produto.setProdutoCores(cores);
+        produto.setProdutoUrlMock("");
+
+        List<ComponentePojo> componentes = new ArrayList<>();
+
+        ComponentePojo componente = new ComponentePojo();
+        componente.setComponenteNome("Controle");
+        componente.setComponenteQuantidade(1);
+
+        componentes.add(componente);
+
+        produto.setComponentes(componentes);
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("token",this.token)
+                .body(produto)
+            .when()
+                .post("/v2/produtos")
+            .then()
                 .assertThat()
                     .body("error", equalTo("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00"))
                     .statusCode(422);
