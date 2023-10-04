@@ -1,4 +1,4 @@
-```markdown
+
 # API de Validação de Produtos - Lojinha
 
 Este repositório contém testes de API Rest para o módulo de Produtos da aplicação Lojinha. Os testes foram implementados em Java utilizando a biblioteca RestAssured e JUnit.
