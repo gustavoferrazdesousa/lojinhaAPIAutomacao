@@ -1,6 +1,7 @@
 package modulos.produtos;
 
 import dataFactory.ProdutoDataFactory;
+import dataFactory.UsuarioDataFactory;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,14 +30,10 @@ public class ProdutoTest {
         //port = 8080(nº da porta, caso seja necessário
         basePath = "/lojinha";
 
-        UsuarioPojo usuario = new UsuarioPojo();
-        usuario.setUsuarioLogin("admin");
-        usuario.setUsuarioSenha("admin");
-
         //Obter o token do usuario admin
         this.token = given()
                 .contentType(ContentType.JSON)
-                .body(usuario)
+                .body(UsuarioDataFactory.criarUsarioAdministrador())
             .when()
                 .post("/v2/login")
             .then()
