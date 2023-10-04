@@ -82,9 +82,6 @@ Este projeto está sob a licença [LojinhaAPI PTQS](LICENSE).
 
 Para dúvidas, sugestões ou informações adicionais, entre em contato com [Gustavo Ferraz](mailto:gustavoferrazdesousa@gmail.com).
 
----
-
-**Nota:** Este é um exemplo de README básico e pode ser personalizado com informações específicas do seu projeto. Certifique-se de atualizar os detalhes, a licença e as instruções de instalação de acordo com o seu contexto.
 ```
 
 Lembre-se de substituir `[Nome da Licença]`, `[seu-usuario]`, `[nome-do-repositorio]`, `[sua-contribuicao]`, `[seu-nome]` e `[seu-email@example.com]` com as informações corretas do seu projeto e preferências. Este é um ponto de partida para criar um README informativo e útil para o seu repositório no GitHub.# lojinhaAPIAutomacao
