@@ -76,11 +76,11 @@ git push origin feature/sua-contribuicao
 
 ## Licença
 
-Este projeto está sob a licença [Nome da Licença](LICENSE).
+Este projeto está sob a licença [LojinhaAPI PTQS](LICENSE).
 
 ## Contato
 
-Para dúvidas, sugestões ou informações adicionais, entre em contato com [seu-nome](mailto:seu-email@example.com).
+Para dúvidas, sugestões ou informações adicionais, entre em contato com [Gustavo Ferraz](mailto:gustavoferrazdesousa@gmail.com).
 
 ---
 
