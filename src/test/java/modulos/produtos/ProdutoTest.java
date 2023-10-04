@@ -1,5 +1,6 @@
 package modulos.produtos;
 
+import dataFactory.ProdutoDataFactory;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,20 +53,7 @@ public class ProdutoTest {
         given()
                 .contentType(ContentType.JSON)
                 .header("token",this.token)
-                .body("{\n" +
-                        "  \"produtoNome\": \"Play Staion 5\",\n" +
-                        "  \"produtoValor\": 0.00,\n" +
-                        "  \"produtoCores\": [\n" +
-                        "    \"Branco\"\n" +
-                        "  ],\n" +
-                        "  \"produtoUrlMock\": \"\",\n" +
-                        "  \"componentes\": [\n" +
-                        "    {\n" +
-                        "      \"componenteNome\": \"Controle\",\n" +
-                        "      \"componenteQuantidade\": 1\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}")
+                .body(ProdutoDataFactory.criarProdutoComumComOValorIgualA(0.00))
         .when()
                 .post("/v2/produtos")
         .then()
@@ -80,31 +68,10 @@ public class ProdutoTest {
         //Tentar inserir produto com valor 0.00 e validar que a mensagem de erro foi apresentada
         // e ostatus code retornardo foi 422
 
-        ProdutoPojo produto = new ProdutoPojo();
-        produto.setProdutoNome("Play Station 5");
-        produto.setProdutoValor(7000.01);
-
-        List<String> cores = new ArrayList<>();
-        cores.add("Preto");
-        cores.add("Branco");
-
-        produto.setProdutoCores(cores);
-        produto.setProdutoUrlMock("");
-
-        List<ComponentePojo> componentes = new ArrayList<>();
-
-        ComponentePojo componente = new ComponentePojo();
-        componente.setComponenteNome("Controle");
-        componente.setComponenteQuantidade(1);
-
-        componentes.add(componente);
-
-        produto.setComponentes(componentes);
-
         given()
                 .contentType(ContentType.JSON)
                 .header("token",this.token)
-                .body(produto)
+                .body(ProdutoDataFactory.criarProdutoComumComOValorIgualA(7000.01))
             .when()
                 .post("/v2/produtos")
             .then()
