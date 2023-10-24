@@ -35,7 +35,7 @@ Este projeto tem como objetivo validar a funcionalidade do módulo de Produtos d
 1. Clone este repositório em sua máquina local:
 
 ```bash
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
+git https://github.com/gustavoferrazdesousa/lojinhaAPIAutomacao
 ```
 
 2. Abra o projeto em sua IDE favorita.
